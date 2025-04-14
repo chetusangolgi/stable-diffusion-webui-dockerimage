@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  a1111-webui:
+    build:
+      context: .         # Assumes Dockerfile is in the current directory
+      dockerfile: Dockerfile
+    container_name: a1111-webui
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./models:/app/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    runtime: nvidia
+    stdin_open: true
+    tty: true
